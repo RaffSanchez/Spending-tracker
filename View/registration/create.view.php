@@ -1,5 +1,4 @@
-
-
+<?php require('Views/partials/head.php'); ?>
 
 <main id="log_wrapper">
     <form action="<?= redirectLink("registration") ?>" method="POST">
@@ -26,3 +25,6 @@
         </div>
     </form>
 </main>
+
+<script type="module" src="../Views/assets/js/index.js"></script>
+<?php require('Views/partials/footer.php'); ?>
