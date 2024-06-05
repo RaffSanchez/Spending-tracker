@@ -12,7 +12,7 @@ require 'Core/Database.php';
 
 $router = new Router();
 
-
+require 'routes.php';
 $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 
 $router->route( $uri, $method );
