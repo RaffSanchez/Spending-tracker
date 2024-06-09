@@ -1,59 +1,47 @@
-<?php<?php
+<?php
 
+class Router {
+    protected $routes = [];
 
-function dd ( $value )
-{
-    echo "<pre>";
-    var_dump($value);
-    echo "</pre>";
-    die();
+    public function add ( $method, $uri, $controller )
+    {
+        $this->routes[] = [
+            'uri' => $uri,
+            'controller' => $controller,
+            'method' => $method
+        ];
+    }
 
-}
+    public function getRoutes()
+    {
+        return $this->routes;
+    }
 
-function redirect( $path )
-{
-    header("location: /{$GLOBALS['file']}/index.php{$path}");
-    die();
-}
+    public function get ( $uri, $controller )
+    {
+        return $this->add( "GET", $uri, $controller );
+    }
 
-function view( $path, $attribute = [] )
-{
-    extract( $attribute );
-    require 'Views/' . $path;
-}
+    public function post ( $uri, $controller )
+    {
+        return $this->add( "POST", $uri, $controller );
+    }
 
-function config( $configName = 'database' )
-{
+    public function delete ( $uri, $controller )
+    {
+        return $this->add( "DELETE", $uri, $controller );
+    }
 
-    $config = require 'config.php';
-    return $config[$configName];
-}
+    public function route( $uri, $method )
+    {
+        foreach ($this->routes as $route){
+            if($route['uri'] == $uri && $route['method'] == strtoupper($method))
+            {
+                return require "Controller/" . $route['controller'];
+            }
+        }
 
-function urlIs($value){
-    
-    return parse_url($_SERVER["REQUEST_URI"])['path'] == $value;
+        header("location: /{$GLOBALS['file']}/index.php/login");
+    }
 
-}
-
-function isUserValid() {
-    
-    if( empty($_SESSION) ) redirect("/login");
-
-}
-
-function redirectLink( $path )
-{
-    return "/{$GLOBALS['file']}/index.php/{$path}";
-}
-
-
-function errorPage( $code, $text )
-{
-    view("error/404.view.php", [
-        "error" => $code,
-        "description" => $text,
-        "header" => "location: /{$GLOBALS['file']}/index.php"
-    ]);
-
-    ;
 }
